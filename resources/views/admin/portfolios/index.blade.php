@@ -1,0 +1,6 @@
+@extends('layouts.admin') @section('page-title', 'Portfolio') @section('content')
+<div style="display:flex; justify-content:flex-end; margin-bottom:1.5rem;"><a href="{{ route('admin.portfolios.create') }}" class="btn btn-accent"><i class="fas fa-plus"></i> Add Item</a></div>
+<div class="admin-card"><table class="admin-table"><thead><tr><th>Title</th><th>Category</th><th>Type</th><th>Featured</th><th>Public</th><th>Actions</th></tr></thead><tbody>
+    @foreach($portfolios as $p)<tr><td>{{ $p->title }}</td><td><span class="badge badge-info">{{ $p->category?->name }}</span></td><td>{{ ucfirst($p->media_type) }}</td><td>{!! $p->is_featured ? '<i class="fas fa-star" style="color:var(--gold)"></i>' : '—' !!}</td><td><span class="badge {{ $p->is_public ? 'badge-success' : 'badge-danger' }}">{{ $p->is_public ? 'Yes' : 'No' }}</span></td><td style="display:flex; gap:0.5rem;"><a href="{{ route('admin.portfolios.edit', $p) }}" class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></a><form method="POST" action="{{ route('admin.portfolios.destroy', $p) }}" onsubmit="return confirm('Delete?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form></td></tr>@endforeach
+</tbody></table><div style="margin-top:1rem;">{{ $portfolios->links() }}</div></div>
+@endsection

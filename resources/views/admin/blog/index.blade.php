@@ -1,0 +1,6 @@
+@extends('layouts.admin') @section('page-title', 'Blog Posts') @section('content')
+<div style="display:flex; justify-content:flex-end; margin-bottom:1.5rem;"><a href="{{ route('admin.blog.create') }}" class="btn btn-accent"><i class="fas fa-plus"></i> New Post</a></div>
+<div class="admin-card"><table class="admin-table"><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
+    @foreach($posts as $post)<tr><td>{{ Str::limit($post->title, 40) }}</td><td>{{ $post->author->name }}</td><td><span class="badge badge-info">{{ $post->category?->name ?? '—' }}</span></td><td><span class="badge badge-{{ $post->status=='published'?'success':($post->status=='draft'?'warning':'secondary') }}">{{ ucfirst($post->status) }}</span></td><td style="font-size:0.85rem;">{{ $post->published_at?->format('M d, Y') ?? '—' }}</td><td style="display:flex; gap:0.5rem;"><a href="{{ route('admin.blog.edit', $post) }}" class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></a><form method="POST" action="{{ route('admin.blog.destroy', $post) }}" onsubmit="return confirm('Delete?')">@csrf @method('DELETE')<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></form></td></tr>@endforeach
+</tbody></table><div style="margin-top:1rem;">{{ $posts->links() }}</div></div>
+@endsection
